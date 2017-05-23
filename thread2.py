@@ -3,11 +3,11 @@ from picamera import PiCamera
 import cv2
 import numpy as np
 import multiprocessing
-
+import signal
 import RPi.GPIO as GPIO
 import time
 import threading
-
+import sys
 
 moveSleepDelay = 0.1
 moveSteps = 10
@@ -20,13 +20,15 @@ pinCamGauche = 15
 pinCamDroite = 13
 headMoveDirection = True # True = Gauche, False = Droite
 
-pill2kill = threading.Event()
+mutexHead = threading.Event()
+mutexVideo = threading.Event()
 
 #Resolution camera
 resolutionX = 320
 resolutionY = 240
 
 #Load a cascade file for detecting faces
+'''
 face_cascade = cv2.CascadeClassifier('/home/pi/opencv_regular/opencv-3.2.0/data/haarcascades/haarcascade_frontalface_alt.xml')
 
 camera = PiCamera()
@@ -43,7 +45,7 @@ positions = ''
 font = cv2.FONT_HERSHEY_SIMPLEX
 center = []
 
-
+'''
 def actionRoues(pin):
 	if pin == 200 and oldPin != 200:
 		#Eteind la led	
@@ -85,12 +87,16 @@ def setup():
 	GPIO.setup(pinCamGauche,GPIO.OUT)
 	GPIO.setup(pinCamDroite,GPIO.OUT)
 
-def threadMoveHead(pill2kill):
+def threadMoveHead(mutexHead):
 	global headMoveDirection, moveSleepDelay
 	counter = moveSteps
 	while True:
 		# Thread is disabled
-		if pill2kill.wait(moveSleepDelay):
+		if mutexHead.wait(moveSleepDelay):
+			global halt
+			if halt:
+				print "[HALT] Head thread"
+				break
 			time.sleep(moveSleepDelay * 2)
 			continue
 		# Inversion de la direction
@@ -109,36 +115,42 @@ def threadMoveHead(pill2kill):
 		counter += (1 if headMoveDirection else -1)
 		print "Counter:", counter
 
-def threadScanVideo(pill2kill):
+def threadScanVideo(mutexHead, mutexVideo):
 	print "VIDEO"
-	'''
-	time.sleep(2)
-	pill2kill.set() # Stop le threadMoveHead 
-	time.sleep(2)
-	pill2kill.clear() # Relance le threadMoveHead
-	time.sleep(2)
-	pill2kill.set() # Stop le threadMoveHead 
-	time.sleep(2)
-	pill2kill.clear() # Relance le threadMoveHead
-	time.sleep(2)
-	pill2kill.set() # Stop le threadMoveHead 
-	time.sleep(2)
-	pill2kill.clear() # Relance le threadMoveHead
-	'''
+	while True:
+		if mutexVideo.wait(1):
+			print "[HALT] Video thread"
+			break
+		print "Video"
 	
-	
+# Interrupt Signal
+halt = False
+def stopAll(signum, frame):
+	print "Interrupt!!"
+	global halt
+	halt = True
+	mutexHead.set()
+	mutexVideo.set()
+signal.signal(signal.SIGINT, stopAll)
 
 
-	
-tHead = threading.Thread(target=threadMoveHead, args=([pill2kill]))
-tScan = threading.Thread(target=threadScanVideo, args=([pill2kill]))
+
+# mutexHead.set() # Pause le threadMoveHead
+# mutexVideo.set() # Stop le threadScanVideo
+# stopAll() # Stop all threads
+
+tHead = threading.Thread(target=threadMoveHead, args=([mutexHead]))
+tScan = threading.Thread(target=threadScanVideo, args=([mutexHead, mutexVideo]))
 
 setup()
 
-tHead.start()
-tScan.start()
+try:
+	tHead.start()
+	tScan.start()
 
-tHead.join()
-tScan.join()
+	while not halt:
+		continue
+	print "[HALT] Main thread"
 
-print "Les deux threads sont termines"
+except Exception as ex:
+		print ex
