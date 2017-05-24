@@ -46,6 +46,15 @@ positions = ''
 font = cv2.FONT_HERSHEY_SIMPLEX
 center = []
 
+
+def setup():
+	import RPi.GPIO as GPIO
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(pinCamGauche,GPIO.OUT)
+	GPIO.setup(pinCamDroite,GPIO.OUT)
+
+
+
 oldPin = 200
 def actionRoues(pin):
 	if pin == 200 and oldPin != 200:
@@ -56,7 +65,7 @@ def actionRoues(pin):
 	
 	
 	if oldPin == pin and oldPin != 200:
-		#Allume la led	
+		print "Allume la led"
 		GPIO.setup(pin,GPIO.OUT)
 		print "startActionRoues"
 		GPIO.output(pin,GPIO.HIGH)
@@ -81,22 +90,18 @@ def actionRotationCamera(actionCam, temps = 0):
 	
 	
 	if actionCam == pinCamGauche:
-		#GPIO.setup(actionCamGauche,GPIO.OUT)
-		
-		#GPIO.output(actionCamGauche,GPIO.HIGH)
+		GPIO.output(pinCamDroite,GPIO.HIGH)
 		
 		time.sleep(wait)
-		print "Cam Gauche"
-		#GPIO.output(actionCamGauche,GPIO.LOW)
+		#print "Cam Gauche"
+		GPIO.output(pinCamGauche,GPIO.LOW)
 		
 	elif actionCam == pinCamDroite:
-		#GPIO.setup(actionCamDroite,GPIO.OUT)
-		
-		#GPIO.output(actionCamDroite,GPIO.HIGH)
+		GPIO.output(pinCamDroite,GPIO.HIGH)
 		
 		time.sleep(wait)
-		print "Cam Droite"
-		#GPIO.output(actionCamDroite,GPIO.LOW)
+		#print "Cam Droite"
+		GPIO.output(pinCamGauche,GPIO.LOW)
 	
 	
 
@@ -114,11 +119,7 @@ def pinAttraperRelacherCanette(str):
 
 
 
-def setup():
-	import RPi.GPIO as GPIO
-	GPIO.setmode(GPIO.BOARD)
-	GPIO.setup(pinCamGauche,GPIO.OUT)
-	GPIO.setup(pinCamDroite,GPIO.OUT)
+
 
 def threadMoveHead(mutexHead):
 	global headMoveDirection, moveSleepDelay
@@ -138,15 +139,15 @@ def threadMoveHead(mutexHead):
 			print "Nouvelle direction:", ("Gauche" if headMoveDirection else "Droite")
 			if headMoveDirection:
 				print "Set pins GAUCHE = 1"
-				#GPIO.output(pinCamGauche, GPIO.HIGH)
-				#GPIO.output(pinCamDroite, GPIO.LOW)
+				GPIO.output(pinCamGauche, GPIO.HIGH)
+				GPIO.output(pinCamDroite, GPIO.LOW)
 			else:
 				print "Set pins DROITE = 1"
-				#GPIO.output(pinCamGauche, GPIO.LOW)
-				#GPIO.output(pinCamDroite, GPIO.HIGH)
+				GPIO.output(pinCamGauche, GPIO.LOW)
+				GPIO.output(pinCamDroite, GPIO.HIGH)
 		# Increment
 		counter += (1 if headMoveDirection else -1)
-		print "Counter:", counter
+		#print "Counter:", counter
 
 def threadScanVideo(mutexHead, mutexVideo):
 	print "VIDEO"
