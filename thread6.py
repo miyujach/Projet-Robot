@@ -1,3 +1,5 @@
+#!/usr/bin/python2.7
+
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import cv2
@@ -32,6 +34,8 @@ pinRoueStop = 7
 pinAttraper= 4
 pinRelacher= 8
 pinInfrarouge= 9
+initCamera = 10
+pinRoueReculer = 11
 
 
 #Parametres camera
@@ -61,7 +65,7 @@ mutexActionRotationHead = threading.Event()
 mutexHead = threading.Event()
 mutexVideo = threading.Event()
 moveSleepDelay = 0.1
-moveSteps = 5
+moveSteps = 10
 tHead =""
 tScan =""
 
@@ -87,10 +91,11 @@ nombreDeRotationCameraPourLaRecherche = 0
 headMoveDirection = True # True = Gauche, False = Droite
 canetteTrouvee = False
 canetteAttrape = False
+zoneDepotTrouvee = False
 centre_canette = []
 centre_zoneDepot = []
-tempsTourCompletRobot = ""
-angleRotationSteps = ""
+tempsTourCompletRobot = 0
+angleRotationSteps = 0
 tempsDeplacementRobotDansPieceSiAucunObjetTrouve = ""
 
 
@@ -101,11 +106,12 @@ def setup():
 	global lowerCouleurZoneDepot, upperCouleurZoneDepot
 	global couleurCentreCanette, couleurCentreZoneDepot
 	global tempsTourCompletRobot, angleRotationSteps, tempsDeplacementRobotDansPieceSiAucunObjetTrouve
+	global angleCamera
 	
 # COULEUR DE LA CANETTE	
-	tempsTourCompletRobot = 10
-	angleRotationSteps = 4
-	tempsDeplacementRobotDansPieceSiAucunObjetTrouve = 20
+	tempsTourCompletRobot = 20.4
+	angleRotationSteps = 16
+	tempsDeplacementRobotDansPieceSiAucunObjetTrouve = 10
 	
 	lowerCouleurCanette = [150,150,50]
 	upperCouleurCanette = [180,255,255]
@@ -120,8 +126,16 @@ def setup():
 	# Lancement des threads
 	tHead = threading.Thread(target=threadMoveHead, args=([mutexHead]))
 	tScan = threading.Thread(target=threadScanVideo, args=([mutexHead, mutexVideo]))
+	
+	
+	#Intialise la camera a 0 degre
+	response = mutexMethod(initCamera, "Initialisation de la camera [[[ ANGLE = 0 DEGRES ]]")
+	angleCamera = 0
+	print "Angle de la camera"
+	print angleCamera
+	print "------------------"
 
-
+	
 	try:
 		tHead.start()
 		tScan.start()
@@ -132,17 +146,20 @@ def setup():
  
 	except Exception as ex:
 			print ex
-
+	
 	
 	
 	
 def mutexMethod(pin, text="", wantResponse = False):
 	global address, bus, lock
 	lock.acquire()
+	myResponse = 0
+	
 	try:
 		bus.write_byte(address, pin)
+		
 		time.sleep(0.1)	
-		print text
+		#print text
 		
 		if wantResponse:
 			myResponse = bus.read_byte(address)
@@ -151,7 +168,6 @@ def mutexMethod(pin, text="", wantResponse = False):
 		
 	except IOError as ioe:
 		print ioe
-		#subprocess.call(['i2cdetect', '-y', '1'])
 	
 	finally:
 		lock.release()
@@ -160,61 +176,74 @@ def mutexMethod(pin, text="", wantResponse = False):
 		
 		
 		
+		
+def actionInfrarouge(wantResponse = False):
+	pin = pinInfrarouge
+	text = ""
+
+	response = mutexMethod(pin, text, wantResponse)
+	print "response :", response
+
+	if response == 1:
+		response = True
+	else:
+		response = False
+
+	print "Response Arduino:", response
+
+	return response
+		
+		
+		
+		
+		
 def actionRoues(pin = pinRoueStop, text = ""):
-	global pinRoueAvancer
+	global pinRoueAvancer, pinRoueReculer
 	global tempsTourCompletRobot, angleRotationSteps
 	#   actionRoues() = Roues arretes
 	#	actionRoues(args) = Roues en marche
 	
+	
+	
+	
 	if pin == pinRoueAvancer:
 		#Test si objet en face du robot
+		
 		responseInfrarouge = actionInfrarouge(True)
 		if responseInfrarouge != "" and responseInfrarouge == True:
 			#Si responseInfrarouge = True => Mur en face
 			#Si responseInfrarouge = False => Rien en face
-			
-			'''
-			rotationRobot = tempsTourCompletRobot / angleRotationSteps
-			while rotationRobot != 0 and responseInfrarouge:
-				#Rotation du robot 
-				
-				
-				
-				if rotationRobot == 1:
-					responseInfrarouge = actionInfrarouge(True)
-					
-					if responseInfrarouge != "" and responseInfrarouge == True:
-						rotationRobot = tempsTourCompletRobot / angleRotationSteps
-				
-				rotationRobot -= 1
-			'''
 			
 			
 			while responseInfrarouge:
 				#Si la read_byte infrarouge renvoit True ou False => Code fonctionne
 				#Sinon l'adapter
 				
-				if responseInfrarouge == True:
-					#Rotation du robot
-					mutexMethod(pinRoueDroite, "Le robot ne peut pas [[ AVANCER ]] car il y a un obstacle en face")
-					print "Le robot tourne sur la [[ DROITE ]] pour contourner l'obstacle !"
-				responseInfrarouge = actionInfrarouge(True)
 				
-			
+				#Rotation du robot
+				temps = 0
+				while temps < 5.1:
+					actionRoues(pinRoueReculer, "[[ Le robot recule car il y a un OBSTACLE en face ]]")
+					temps += 1
+					
+					
+				print "responseInfrarouge dans le while :", responseInfrarouge
+				responseInfrarouge = actionInfrarouge(True)
+				print "responseInfrarouge dans le while apres:", responseInfrarouge
+					
 		else:
-			mutexMethod(pin, text)
+			response = mutexMethod(pin, text)
+		
 	else:
-		mutexMethod(pin, text)
+		response = mutexMethod(pin, text)
 
 
-def actionInfrarouge(wantResponse = False):
-	pin = pinInfrarouge
-	text = ""
-	#response = mutexMethod(pin, text, wantResponse)
-	#Mockup
-	response = False #Pas de mur en face
-	#response = True #Mur en face
-	return response
+
+
+
+
+
+
 
 def actionRotationCamera(actionCam, temps = 0, text = "", angleImpose = ""):
 	global pinCamGauche, pinCamDroite
@@ -243,11 +272,13 @@ def actionRotationCamera(actionCam, temps = 0, text = "", angleImpose = ""):
 	if wait != 0:
 		threadFinished = False
 	
+	
 	mutexMethod(actionCam, text)			
 	time.sleep(wait)
 	
 	
-
+	
+	
 
 
 def orientationRobotVersCanette(centreObject):
@@ -259,34 +290,49 @@ def orientationRobotVersCanette(centreObject):
 	pins = []
 	
 	
-	if(centreObject[0] <= centerX-40 and centreObject[0] != 0):
-		#Canette a gauche
-		cv2.putText(image, "Gauche", (150, 230), font, 0.5, (255,255,255),2,cv2.LINE_AA)
+	# Si le cercle est en haut a gauche
+	# Si centreObject[0] == 0
+	# Si centreObject[1] == 1
+	
+	#-------------------------------------------------
+	#Si centreObject[0] == 0 et centreObject[1] == 20
+	#Si centreObject[0] == 20 et centreObject[1] == 20
+	#Si centreObject[0] == 20 et centreObject[1] == 0
+	#Si centreObject[0] == 0 et centreObject[1] == 0
+	
+	if centreObject[0] != 0 or centreObject[1] != 0:
+	
+		if(centreObject[0] <= centerX-40):
+			#Canette a gauche
+			cv2.putText(image, "Gauche", (150, 230), font, 0.5, (255,255,255),2,cv2.LINE_AA)
 
-		print "La canette est sur la gauche"
-		pins = [pinCamGauche, pinRoueGauche, "[[ Gauche ]]"]
-		
-	elif(centreObject[0] >= centerX+40 and centreObject[0] != 0):
-		#Canette a droite
-		cv2.putText(image, "Droite", (150, 230), font, 0.5, (255,255,255),2,cv2.LINE_AA)
-		
-		print "La canette est sur la droite"
-		pins = [pinCamDroite, pinRoueDroite, "[[ Droite ]]"]
+			#print "La canette est sur la gauche"
+			pins = [pinCamGauche, pinRoueGauche, "[[ Gauche ]]"]
+			
+		elif(centreObject[0] >= centerX+40):
+			#Canette a droite
+			cv2.putText(image, "Droite", (150, 230), font, 0.5, (255,255,255),2,cv2.LINE_AA)
+			
+			#print "La canette est sur la droite"
+			pins = [pinCamDroite, pinRoueDroite, "[[ Droite ]]"]
 
-	elif(centreObject[0] > centerX-40 and centreObject[0] < centerX+40 and centreObject[0] != 0):
-		#Canette au centre
-		cv2.putText(image, "Avancer", (150, 230), font, 0.5, (255,255,255),2,cv2.LINE_AA)
-		
-		print "La canette est au centre"
-		pins = ["-", pinRoueAvancer, "[[ Avancer ]]"]
+		elif(centreObject[0] >= centerX-40 and centreObject[0] <= centerX+40):
+			#Canette au centre
+			cv2.putText(image, "Avancer", (150, 230), font, 0.5, (255,255,255),2,cv2.LINE_AA)
+			
+			#print "La canette est au centre"
+			pins = ["-", pinRoueAvancer, "[[ Avancer ]]"]
+			
+		else:
+			print "!!! Je passe dans cette condition alors qu'il ne faut pas !!!"
+			print "centreObject", centreObject
+			print "/////////////////////////////////////////////////////////////" 
 		
 	return pins
 	
 		
-	
-	
-	
-
+		
+		
 
 def threadMoveHead(mutexHead):
 	global canetteTrouvee, moveSteps
@@ -296,27 +342,31 @@ def threadMoveHead(mutexHead):
 	
 	nbFoisQueLeRobotATourne = 0
 	
-	if not canetteTrouvee:
-		counter = moveSteps
-		while True:
-			time.sleep(0.1)
+	counter = 0
+	while True:
+		time.sleep(0.1)
+		
+		
+		
+		# Thread is disabled
+		if mutexHead.wait(moveSleepDelay):
+			if halt:
+				print "[HALT] Head thread"
+				break
+			time.sleep(moveSleepDelay * 2)
+			continue
 			
-			# Thread is disabled
-			if mutexHead.wait(moveSleepDelay):
-				if halt:
-					print "[HALT] Head thread"
-					break
-				time.sleep(moveSleepDelay * 2)
-				continue
-				
+		
+		#Si canetteTrouvee = False ou zoneDepotTrouvee = False
+		if not canetteTrouvee or not zoneDepotTrouvee:	
 				
 			# Inversion de la direction
 			if counter == moveSteps or counter == -moveSteps:
 				nombreDeRotationCameraPourLaRecherche = nombreDeRotationCameraPourLaRecherche + 1
 				headMoveDirection = not headMoveDirection
 				
-				print "Nouvelle direction de la camera pour recherche:", ("GAUCHE" if headMoveDirection else "DROITE")
-				print "nombreDeRotationCameraPourLaRecherche", nombreDeRotationCameraPourLaRecherche
+				#print "Nouvelle direction de la camera pour recherche:", ("GAUCHE" if headMoveDirection else "DROITE")
+				#print "nombreDeRotationCameraPourLaRecherche", nombreDeRotationCameraPourLaRecherche
 				
 				
 				#Compter le nombre de fois que le robot entre dans cette condition
@@ -330,13 +380,16 @@ def threadMoveHead(mutexHead):
 					
 					
 					
-					while tempsQuartDeTourRebot != 0:
-						print "Le robot tourne sur la droite car il n'a pas trouvee de canette pendant sa recherche"
+					while tempsQuartDeTourRebot >= 0:
+						print "Le robot tourne sur la gauche car il n'a pas trouvee de canette pendant sa recherche"
 						actionRoues(pinRoueGauche)	
 						
 						tempsQuartDeTourRebot -= 1
 						nbFoisQueLeRobotATourne += 1 
+						
 						#continue	
+					
+					print "je sors"
 					
 					#Si le robot a fait un tour sur lui meme, alors on le fait rotation  gauche + avancer
 					#On rajoute une [[ rotation a gauche ]] en plus de la faire avancer afin,
@@ -345,13 +398,13 @@ def threadMoveHead(mutexHead):
 						nbFoisQueLeRobotATourne = 0
 						
 						rotationAGauche = tempsTourCompletRobot/angleRotationSteps
-						while rotationAGauche != 0:
+						while rotationAGauche >= 0:
 							#Robot tourne a gauche
 							actionRoues(pinRoueGauche, "Le robot tourne a [[ GAUCHE ]] car il ne trouve pas de canette apres avoir fait un tour sur lui meme")
 							rotationAGauche -= 1
 						
 						deplacement_robot_piece = tempsDeplacementRobotDansPieceSiAucunObjetTrouve
-						while deplacement_robot_piece != 0:
+						while deplacement_robot_piece >= 0:
 							#Avancer
 							actionRoues(pinRoueAvancer, "Le robot [[ AVANCE ]] car il ne trouve pas de canette apres avoir fait un tour sur lui meme")
 									
@@ -367,7 +420,6 @@ def threadMoveHead(mutexHead):
 						
 					
 			else:
-				print headMoveDirection
 				if headMoveDirection:
 					actionRotationCamera(pinCamGauche,0,"Tourne la camera sur la [[ GAUCHE ]]")
 				else:
@@ -377,12 +429,17 @@ def threadMoveHead(mutexHead):
 			# Increment
 			counter += (1 if headMoveDirection else -1)
 
-
 	
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 def threadScanVideo(mutexHead, mutexVideo):
 	#print "VIDEO"
@@ -390,7 +447,7 @@ def threadScanVideo(mutexHead, mutexVideo):
 	global lowerCouleurCanette, upperCouleurCanette
 	global lowerCouleurZoneDepot, upperCouleurZoneDepot
 	global couleurCentreCanette, couleurCentreZoneDepot
-	global canetteAttrape, canetteTrouvee
+	global canetteAttrape, canetteTrouvee, zoneDepotTrouvee
 	global centre_canette, centre_zoneDepot
 	global pinAttraper, pinRelacher
 	
@@ -398,7 +455,7 @@ def threadScanVideo(mutexHead, mutexVideo):
 	global pinRoueDroite, pinCamDroite
 	global pinRoueAvancer,centerX, centerY
 	
-	global tempsTourCompletRobot
+	global tempsTourCompletRobot, zoneDepotTrouvee
 	
 
 	
@@ -420,12 +477,12 @@ def threadScanVideo(mutexHead, mutexVideo):
 	for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 		image = frame.array
 		
-		'''
+		
 		# Lignes affiches a l'ecran
-		gauche = cv2.line(image, ((resolutionX /2)-40, resolutionY), ((resolutionX/2)-40, 0), (255,0,0), 2)
-		droite = cv2.line(image, ((resolutionX /2)+40, resolutionY), ((resolutionX/2)+40, 0), (255,255,0), 2)
-		hauteur = cv2.line(image, (0, (resolutionY /2)), ((resolutionX, resolutionY/2)), (0,255,0), 2)
-		'''
+		#gauche = cv2.line(image, ((resolutionX /2)-40, resolutionY), ((resolutionX/2)-40, 0), (255,0,0), 2)
+		#droite = cv2.line(image, ((resolutionX /2)+40, resolutionY), ((resolutionX/2)+40, 0), (255,255,0), 2)
+		#hauteur = cv2.line(image, (0, (resolutionY /2)), ((resolutionX, resolutionY/2)), (0,255,0), 2)
+		
 		
 		
 		
@@ -575,7 +632,7 @@ def threadScanVideo(mutexHead, mutexVideo):
 		centre_canette = [cxMC,cyMC]
 		centre_zoneDepot = [cxMD,cyMD]
 		
-		
+
 		
 		###################################################################################
 		######################								         ######################
@@ -596,7 +653,7 @@ def threadScanVideo(mutexHead, mutexVideo):
 			if centre_canette == [0,0]:
 				mutexHead.clear() # Relance le threadMoveHead
 				
-				print "Aucune canette trouvee"
+				#print "Aucune canette trouvee"
 				if canetteTrouvee:
 					canetteTrouvee = False
 					
@@ -616,41 +673,32 @@ def threadScanVideo(mutexHead, mutexVideo):
 			elif centre_canette != [0,0] and centre_zoneDepot == [0,0]:
 				mutexHead.set() # Stop le threadMoveHead 
 				
-				if not canetteTrouvee:
+				if not canetteTrouvee or not canetteTrouvee:
 					canetteTrouvee = True
 					print "Canette trouvee"
-					
+				
 				pinsOrientation = orientationRobotVersCanette(centre_canette)
+				
 				
 				
 				# pinsOrientation[0] == Pin de la cam
 				# pinsOrientation[1] == Pin de la roue
-				# pinsOrientation[2] == Message de l'action
-				
-				
-				print "DEBUG" 
-				print pinsOrientation
-				print "DEBUG"
-				
-				
+				# pinsOrientation[2] == Message de l'action				
 				if pinsOrientation[0] != "-":
 					actionRoues(pinsOrientation[1])
-					
+					print "pinsOrientation[1] : ", pinsOrientation[1]
 					
 				else:					
 					#Le robot est dans l'axe de la canette, on la cam est a 0deg
-					actionRotationCamera(pinsOrientation[1])
+					#actionRotationCamera(pinsOrientation[1])
+					actionRoues(pinsOrientation[1])
 					
 					#Remet la camera au centre ==> pinsOrientation[0] est egal a "-" 
 					if angleCamera != 0:
 							actionRotationCamera(pinsOrientation[0], 0, "La camera se recentre a 0 degre", 0)
 				
-				print pinsOrientation[2], "Direction Robot"
 				
-				print "\\\\\\\\\\\\\\\\\\\\\\\\"
-				print "Angle de la camera"
-				print angleCamera, "degres"
-				print "\\\\\\\\\\\\\\\\\\\\\\\\"
+		
 			
 			
 			
@@ -711,9 +759,8 @@ def threadScanVideo(mutexHead, mutexVideo):
 						canetteTrouvee = True
 						
 					pinsOrientation = orientationRobotVersCanette(centre_canette)
+
 					
-					
-							
 					# pinsOrientation[0] == Pin de la cam
 					# pinsOrientation[1] == Pin de la roue
 					if pinsOrientation[0] != "-":
@@ -730,13 +777,6 @@ def threadScanVideo(mutexHead, mutexVideo):
 							actionRotationCamera(pinsOrientation[0], 0, "La camera se recentre a 0 degre", 0)
 
 
-					print pinsOrientation[2], "Direction Robot"
-
-					print "\\\\\\\\\\\\\\\\\\\\\\\\"
-					print "Angle de la camera"
-					print angleCamera, "degres"
-					print "\\\\\\\\\\\\\\\\\\\\\\\\"
-		
 		
 		###################################################################################
 		######################								         ######################
@@ -748,7 +788,7 @@ def threadScanVideo(mutexHead, mutexVideo):
 			if centre_zoneDepot == [0,0]:
 				mutexHead.clear() # Relance le threadMoveHead
 				
-				print "Zone de depot non trouvee"
+				print "Zone de depot non trouvee : ", zoneDepotTrouvee
 				
 				#actionRoues() => N'avance pas
 				#actionRoues(args) => Tourne / Abvance
@@ -759,9 +799,9 @@ def threadScanVideo(mutexHead, mutexVideo):
 			elif centre_zoneDepot != [0,0]:
 				mutexHead.set() # Stop le threadMoveHead 
 				
-				if not canetteTrouvee:
-					canetteTrouvee = True
-					print "Depot trouvee"
+				if not zoneDepotTrouvee:
+					zoneDepotTrouvee = True
+					print "Depot trouve"
 					
 				pinsOrientation = orientationRobotVersCanette(centre_zoneDepot)
 				
@@ -776,18 +816,13 @@ def threadScanVideo(mutexHead, mutexVideo):
 					
 				else:					
 					#Le robot est dans l'axe de la [[ ZONE DE DEPOT ]], on met la cam est a 0deg
-					actionRotationCamera(pinsOrientation[1])
+					actionRoues(pinsOrientation[1])
 					
 					#Remet la camera au centre ==> pinsOrientation[0] est egal a "-" 
 					if angleCamera != 0:
 							actionRotationCamera(pinsOrientation[0], 0, "La camera se recentre a 0 degre", 0)
 				
-				print pinsOrientation[2], "Direction Robot"
 				
-				print "\\\\\\\\\\\\\\\\\\\\\\\\"
-				print "Angle de la camera"
-				print angleCamera, "degres"
-				print "\\\\\\\\\\\\\\\\\\\\\\\\"
 		
 			
 		#########################################################
@@ -811,20 +846,14 @@ def threadScanVideo(mutexHead, mutexVideo):
 		#								 		#
 		#########################################
 
-		print "=================================="
-		print "=================================="
-		print "L ETAT DE LACTION ATTRAPER CANETTE"
-		print canetteAttrape
-		print "=================================="
-		print "=================================="
-		
+				
 		
 		#Cx,Cy,Cw,Ch
 		if areas_Canette and not canetteAttrape:	
-			print "Cw*Ch"
-			print Cw*Ch
+			#print "Cw*Ch"
+			#print Cw*Ch
 			
-			if Cw*Ch > 76000:
+			if Cw*Ch > 50000:
 				actionRoues()
 				mutexMethod(pinAttraper, "[[ ATTRAPER ]] - Robot action")
 				canetteAttrape = True
@@ -836,6 +865,8 @@ def threadScanVideo(mutexHead, mutexVideo):
 				
 				mutexMethod(pinRelacher, "[[ RELACHER ]] - Robot action")
 				canetteAttrape = False
+				zoneDepotTrouvee = False
+				
 				
 				#Rotation du robot a 180 degres (A CALCULER)
 				time = 0
@@ -871,7 +902,7 @@ def threadScanVideo(mutexHead, mutexVideo):
 			print "[HALT] Video thread"
 			break
 	
-	
+
 
 
 	
@@ -883,6 +914,7 @@ def stopAll(signum, frame):
 	halt = True
 	mutexHead.set()
 	mutexVideo.set()
+	actionRoues()
 signal.signal(signal.SIGINT, stopAll)
 
 
@@ -892,3 +924,4 @@ signal.signal(signal.SIGINT, stopAll)
 # stopAll() # Stop all threads
 
 setup()
+	
