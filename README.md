@@ -169,6 +169,7 @@ Le robot AsCyloom représente l'innovation de l'entreprise DaBot, celui-ci est e
 - Sa résistance au choc,
 - De même que sa facilité d'entretien sera aussi pour vous un critère de choix en particulier avec sa séparation en deux étages l'un électronique et l'autre batterie.
 - Le prix des pièces le composant toutes produites en grande série.
+- de nombreuse évolution possible.
 
 ## IV.Evolution ##
 
