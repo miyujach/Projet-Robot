@@ -55,7 +55,7 @@ Schéma représentant le robot et son environnement:
 
 Le résumé complet du projet est disponible au [lien suivant](https://github.com/miyujach/Projet-Robot/blob/master/Documentation%20Sujet/sujet.pdf)
 
-## II.Projet SearchAndDestroy ##
+## II.Projet AsCyloom ##
 
   ### A.Analyse fonctionnelle ###
 
