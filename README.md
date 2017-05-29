@@ -88,6 +88,9 @@ Dans le Schéma suivant:
 | FC10 (contrainte 10) | Resistance à une crevaison | Déplacement | Doit pouvoir retourner à sa base |
 | FC11 (contrainte 11) | Doit pouvoir être facile d'entretien | Pièce industriel standardisé/ Temps de remplacement d'une pièce| 2 à 3 pièces non standart mais resistante |
 | FC12 (contrainte 12) | Doit pouvoir connaitre sa batteire | niveau de la batterie | ------------- |
+| FC13 (contrainte 13) | Etre le plus esthétique possible | Esthétique| Avoir le meilleur design possible en relation avec l’identité visuelle du groupe |
+| FC14 (contrainte 14) | EAvoir un coût de revient limité | Prix | Limiter le coût de revient du robot |
+| FC15 (contrainte 15) | Réaliser un parcours sur une piste en roulant le plus rapidement possible | Temps et Déplacement | maximum 5 minutes pour faire son programme |
 
   ### B.Analyse mécanique ###
 
@@ -107,6 +110,13 @@ Du point de vue de la fonction principale 1. Il fallait un élément permettant 
 - Système magnétique. L'avantage de cette solution par rapport aux autres et de pouvoir être sur de n'attraper que des cylindres en métal.
 
 La solution de l'équipe fut l'utilisation d'un électro-aimant afin de ne pas avoir un aimant fonctionnant en continu et pouvant ainsi récuperé des éléments mécaniques de façon imprévu.
+
+Le dernière élément mis en place fut un détecteur d'obstacle. Plusieurs choix se proposé à nous:
+- un bouton poussoire enfin de signaler un objet face au robot.
+- un récepteur à ultrason.
+- un récepteur infrarouge.
+
+Cette dernière solution fut préféré dans le but d'êviter tout signal parasite dans le détecteur et en raison de son coût.
 
 Après différentes études l'équipe en est arrivé à la modélisation suivante:
 
@@ -137,6 +147,10 @@ UML de déploiement:
 
 ![UML de déploiement](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Deploiement.PNG)
 
+UML d'Etat-transition:
+
+![UML d'Etat-transition](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML_EtatTransition.PNG)
+
 UML d'activité:
 
 ![UML d'activité](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Activit%C3%A9.PNG)
@@ -154,12 +168,18 @@ Sa résistance au choc de même que sa facilité d'entretien sera aussi pour vou
 
 ## IV.Evolution ##
 
-| Fonction  | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
-| FP3 | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
-
 | Fonction | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| FP2 | Doit pouvoir se déplacer | Vitesse et adhérence | ------ | Remplacement des roues par des chenilles ou/et augmentation du couble moteur| 100% |
 | FP3 | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes/Accident contre un obstacle | ------------- | Permettre une reconnaissance sur plusieurs niveaux avec une autre webcam sur le dessus manoeuvré par deux servo-moteurs (<360°) | 100% |
+| FS2 | Doit pouvoir être paramétrable par l’opérateur | Changement de configuration | via button ou via interface web | Création d'une interface web | 100% |
+| FS3 | Doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Optimisation du trajet du robot | ----- | Ajout d'un système de compteur de tour du moteur et/ou cartographie | 80% |
+| FS4 | Doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Optimisation du trajet du robot | ----- | Ajout d'un système de compteur de tour du moteur et/ou cartographie | 80% |
+| FS5 | Doit savoir quand il est chargé | Autonome | ----- | Capable de retourner à la base avant d'être à plat | 100% |
 | FC3 | Doit être autonome | nombre de raccordement physique en cas d'intervention | ------------- | Ajout d'une bobine à induction sous le robot pour recharger la baterrie | 100% |
+| FC4 | Doit être utilisé de jour | Fonctionne avec une luminosité restreinte | ------------- | Ajout d'un projecteur avec détecteur de luminosité | 70% |
+| Autre | Gestion d'une flote | Communique entre eux | ------------- | --------- | 80% |
+| Autre | BigData | Analyse du lieu et optimisation du ramassage en temps | ------------- | --------- | 80% |
 
 ## V.FAQ ##
 
