@@ -10,7 +10,12 @@ void setup()
  
 void loop()
 {
-  valeur_infrarouge = analogRead(infrarougepin);       // reads the value of the sharp sensor
-  Serial.println(valeur_infrarouge);            // prints the value of the sensor to the serial monitor
-  delay(400);                    // wait for this much time before printing next value
+  valeur_infrarouge = analogRead(infrarougepin); // lecture de la valeur retour du capteur
+  if(valeur_infrarouge < analogRead(infrarougepin) and analogRead(infrarougepin) >= 560)
+  {
+    Serial.println(1);  //un obstacle est présent
+  }
+  else{
+    Serial.println(0);// la voie est libre
+  }
 }
