@@ -1,4 +1,4 @@
-Projet AsCyloom
+# Projet AsCyloom #
 
 ----------
 ![Image Sujet](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/b4e18d105783127b522bd345816336ddef0f7b48/t%C3%A9l%C3%A9chargement.png)
@@ -39,6 +39,7 @@ Le projet se présente sous la forme d'un proof of concept.
   [D.Problème](#dprobleme)
 
 ## I.Sujet du projet ##
+
 Il s'agit d'un robot qui sera capable de ramasser des cylindres métalliques (canettes).
 Les critères initiaux du projet sont les suivants:
 
@@ -52,7 +53,7 @@ Les critères initiaux du projet sont les suivants:
 Schéma représentant le robot et son envirronnement:
 ![Image Sujet](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/schema_analyse.png)
 
-Le résumé complet du projet est disponible au [lien suivant](https://github.com/cepes/robotSearchAndDestroy/blob/master/sujet.pdf)
+Le résumé complet du projet est disponible au [lien suivant](https://github.com/miyujach/Projet-Robot/blob/master/Documentation%20Sujet/sujet.pdf)
 
 ## II.Projet SearchAndDestroy ##
 
@@ -65,40 +66,43 @@ Dans le Schéma suivant:
 ![Image_Analyse_Fonctionnelle](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/analyse%20fonctionnelle.PNG)
 
 | Fonction  | Rôle | Critères | Flexibilité |
-| ------------- | ------------- | ------------- | ------------- |
-| FP1 (fonction principale 1) | Doit permettre de ramasser des objets cylindrique | Nombre d'essai et erreur par prise | Taux de reconnaissance des canettes / Accident contre un obstacle |
-| FP2 (fonction principale 2) | Doit pouvoir se déplacer | Déplacement | Angle de Rotation |
-| FP3 (fonction principale 3) | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes / Accident contre un obstacle | ------------- |
-| ------------- | ------------- | ------------- | ------------- |
-| FS1 (fonction secondaire 1) | Doit pouvoir se déplacer en faisant de la lumière ou un son | lumière dégagé et son entendu en db | ------------- |
-| FS2 (fonction secondaire 2) | Doit pouvoir être paramétrable par l’opérateur | Possibilité d'accès au composant | Accès aux prises démontable |
-| FS3 (fonction secondaire 3) | Doit pouvoir se situer pour retourner au dépôt en évitant les obstacles | Temps de retour | ------------- |
-| FS4 (fonction secondaire 4) | Doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Déplacement | Reste dans la zone si mur |
-| FS5 (fonction secondaire 5) | Doit savoir quand il est chargé | témoin de charge / Décharge | Doit pouvoir voir son état de charge |
-| ------------- | ------------- | ------------- | ------------- |
-| FC1 (contrainte 1) | Doit évoluer dans une zone de 20cm² (4 x 5m) | test sur la durée dans une surface supérieur | Reste dans la zone meme si pas de mur |
-| FC2 (contrainte 2) | Doit être utilisé de jour | Taux de luminosité de la zone de test | ------------- |
-| FC3 (contrainte 3) | Doit être autonome | nombre de raccordement physique en cas d'intervention | 1 à 2 |
-| FC4 (contrainte 4) | Doit esquiver des obstacles | parcour de test | ------- |
-| FC5 (contrainte 5) | Doit avoir une zone de dépôt (40 x 40 cm) | taille de la zone | ------- |
-| FC6 (contrainte 6) | Ne doit pas mettre en danger l’utilisateur | action non prévu interrompt le schéma initial | Délai de 1 seconde |
-| FC7 (contrainte 7) | Resistance aux chocs | crashtest/écrassement | Doit resister à un coups de pied / main |
-| FC8 (contrainte 8) | Conforme aux normes CE | habilitation | ------------- |
-| FC9 (contrainte 9) | Resistance a l'eau | test avec de l'eau | Resistance aux eclaboussure |
-| FC10 (contrainte 10) | Resistance à une crevaison | Déplacement | Doit pouvoir retourner à sa base |
-| FC11 (contrainte 11) | Doit pouvoir être facile d'entretien | Pièce industriel standardisé/ Temps de remplacement d'une pièce| 2 à 3 pièces non standart mais resistante |
-| FC12 (contrainte 12) | Doit pouvoir connaitre sa batteire | niveau de la batterie | ------------- |
+| ----------- | ------------- | ------------- | ------------- |
+| FP1 | Le robot doit permettre de ramasser des objets cylindrique | Nombre d'essai et erreur par prise | Taux de reconnaissance des canettes / Accident contre un obstacle |
+| FP2 | Le robot doit pouvoir se déplacer | Déplacement | Angle de Rotation |
+| FP3 | Le robot doit pouvoir identifier des objets | Taux de reconnaissance des canettes/ Pourcentage de reconnaissance de la Zone de stockage / Taux d'accident contre un obstacle | ------------- |
+| ---------- | ------------- | ------------- | ------------- |
+| FS1 | Le robot doit pouvoir se déplacer en faisant de la lumière ou un son | lumière dégagé et son entendu en db | ------------- |
+| FS2 | Le robot doit pouvoir être paramétrable par l’opérateur | Possibilité d'accès au composant | Accès aux prises démontable |
+| FS3 | Le robot doit pouvoir se situer pour retourner au dépôt en évitant les obstacles | Temps de retour | ------------- |
+| FS4 | Le robot doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Déplacement | Reste dans la zone si mur |
+| FS5 | Le robot doit savoir quand il est chargé | témoin de charge / Décharge | Doit pouvoir voir son état de charge |
+| ---------- | ------------- | ------------- | ------------- |
+| FC1 | Le robot doit évoluer dans une zone de 20cm² (4 x 5m) | test sur la durée dans une surface supérieur | Reste dans la zone meme si pas de mur |
+| FC2 | Le robot doit être utilisé de jour | Taux de luminosité de la zone de test | ------------- |
+| FC3 | Le robot doit être autonome | nombre de raccordement physique en cas d'intervention | 1 à 2 |
+| FC4 | Le robot doit esquiver des obstacles | parcour de test | ------- |
+| FC5 | Le robot doit avoir une zone de dépôt (40 x 40 cm) | taille de la zone | ------- |
+| FC6 | Le robot ne doit pas mettre en danger l’utilisateur | action non prévu interrompt le schéma initial | Délai de 1 seconde |
+| FC7 | Le robot doit être resistance aux chocs | crashtest/écrassement | Doit resister à un coups de pied / main |
+| FC8 | Le robot doit être conforme aux normes CE | habilitation | ------------- |
+| FC9 | Le robot doit être resistance a l'eau | test avec de l'eau | Resistance aux eclaboussure |
+| FC10 | Le robot doit avoir une resistance à une crevaison | Déplacement | Doit pouvoir retourner à sa base |
+| FC11 | Le robot doit pouvoir être facile d'entretien | Pièce industriel standardisé/ Temps de remplacement d'une pièce| 2 à 3 pièces non standart mais resistante |
+| FC12 | Le robot doit pouvoir connaitre sa batterie | niveau de la batterie | ------------- |
+| FC13 | Le robot être le plus esthétique possible | Esthétique| Avoir le meilleur design possible en relation avec l’identité visuelle du groupe |
+| FC14 | Le robot doit avoir un coût de revient limité | Prix | Limiter le coût de revient du robot |
+| FC15 | Le robot doit réaliser un parcours sur une piste en roulant le plus rapidement possible | Temps et Déplacement | maximum 5 minutes pour faire son programme |
 
   ### B.Analyse mécanique ###
 
-Le robot disposant d'un chassis basique déjà produit en grande série. Plusieurs éléments sont cependant nécessaire en ajout de ce chassis afin de répondre à notre analyse fonctionnelle.
+Le robot dispose d'un chassis basique, produit en grande série. Plusieurs éléments sont nécessaire en complément afin de répondre à notre analyse fonctionnelle.
 
-Du point de vue de la fonction principale 3 et selon les cas 1. Pour identifier un objet nous avons choisi d'utiliser une webcam.
-La webcam nécessite cependant afin de pouvoir répondre à la question d'être mobile plusieurs possiblités pour étendre son champ de visionson possible:
+Du point de vue de la fonction principale 3 et selon la fonction principale 1. Afin de pouvoir identifier un objet nous avons choisi d'utiliser une webcam.
+La webcam afin de pouvoir répondre à la question à besoin d'être mobile. Plusieurs possiblités pour étendre son champ de vision son possible:
 - Fixé sur le chassis, pour augmenter le champ de vision cette tâche revient aux roues
 - Mobile sur un bras articulé.
 
-Pour ce proof of concept, nous avons décidé de prendre l'option du bras articulé en effet cette option à l'avantage de permettre une plus grande rotation de la caméra. Celle-ci peut ainsi atteindre un axe de rotation d'un peu moins de 360°. Notre exemple cependant restera sur une rotation sur un seul plan.
+Pour ce proof of concept, nous avons décidé de prendre l'option du bras articulé en effet cette option à l'avantage de permettre un plus grande rotation de la caméra. Celle-ci peut ainsi atteindre un axe de rotation d'un peu moins de 360°. Notre exemple cependant restera sur une rotation sur un seul plan.
 
 Du point de vue de la fonction principale 1. Il fallait un élément permettant la préhension. Plusieurs possiblités furent étudiés:
 - Système de pince. Le problème pouvant être la complexité de l'algorythme au vu du temps de dévellopement pour positioner correctement la pince.
@@ -108,17 +112,24 @@ Du point de vue de la fonction principale 1. Il fallait un élément permettant 
 
 La solution de l'équipe fut l'utilisation d'un électro-aimant afin de ne pas avoir un aimant fonctionnant en continu et pouvant ainsi récuperé des éléments mécaniques de façon imprévu.
 
+Le dernière élément mis en place fut un détecteur d'obstacle. Plusieurs choix se proposé à nous:
+- un bouton poussoire enfin de signaler un objet face au robot.
+- un récepteur à ultrason.
+- un récepteur infrarouge.
+
+Cette dernière solution fut préféré dans le but d'êviter tout signal parasite dans le détecteur et en raison de son coût.
+
 Après différentes études l'équipe en est arrivé à la modélisation suivante:
 
-Vue latéral:
+Vue latérale:
 
 ![Modelisation Chassis1](https://github.com/cepes/robotSearchAndDestroy/blob/master/RobotFinal1.PNG)
 
-Vue Frontal:
+Vue frontale:
 
 ![Modelisation Chassis2](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/robot%20final%202.PNG)
 
-Vue de Dessous:
+Vue de dessous:
 
 ![Modelisation Chassis3](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/Robot%20final%203.PNG)
 
@@ -126,16 +137,22 @@ Ci-joint un [modele 3D](https://github.com/cepes/robotSearchAndDestroy/blob/mast
 
   ### Schéma Electronique ###
 
-Le schéma éléctrique est le suivant. La R3 électro-aimant de 12,5 Ohm correspond à la resistance interne de l'electroaimant en fonctionnement. L'Infrarouge n'est pas représenté sur ce schéma car directement alimenté par la raspberry et connecté à celle-ci.
+Le schéma éléctrique est le suivant.
+La Résistante de l'électro-aimant de 12,5 Ohm correspond à la resistance interne de l'electroaimant en fonctionnement.
+
 ![Circuit_Schéma_dévellopé](https://github.com/miyujach/Projet-Robot/blob/master/Sch%C3%A9ma%20%C3%A9lectrique/sch%C3%A9ma_electrique_L293D.PNG)
 
   ### C.UML ###
 
-Au niveau de la liaison entre la partie mécanique et informatique l'UML est le suivant:
+Au niveau de la liaison entre la partie mécanique et informatique. La logique de fonctionnement est la suivante :
 
 UML de déploiement:
 
 ![UML de déploiement](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Deploiement.PNG)
+
+UML d'Etat-transition:
+
+![UML d'Etat-transition](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML_EtatTransition.PNG)
 
 UML d'activité:
 
@@ -146,20 +163,28 @@ UML d'activité:
 ## III.Pourquoi nous? ##
 
 Le robot AsCyloom représente l'innovation de l'entreprise DaBot, celui-ci est en effet capable de répondre à vos besoins exprimé ci-avant si vous n'êtes toujours pas convaincu voici quelques arguments permettant de faire la distinction avec nos concurrents.
-Avec une batterie de 20 000 Ampères sont autonomie est largement supérieur à celle de ses concurrents.
-
-De plus son coût de production tout à faire modique de 231 euros (210 euros à produire), celui-ci vous permettra de répondre à vos attentes sans vous ruiner.
-
-Sa résistance au choc de même que sa facilité d'entretien sera aussi pour vous un critère de qualité.
+- Avec une batterie de 20 000 Ampères sont autonomie est largement supérieur à celle de ses concurrents. 15 000 Ampères selon notre étude.
+- Le mouvement de la webcam via un bras lors d'une recherche d'un objet permet d'économiser de la batterie.
+- Son prix de 231 euros.
+- Sa résistance au choc,
+- De même que sa facilité d'entretien sera aussi pour vous un critère de choix en particulier avec sa séparation en deux étages l'un électronique et l'autre batterie.
+- Le prix des pièces le composant toutes produites en grande série.
+- de nombreuse évolution possible.
 
 ## IV.Evolution ##
 
-| Fonction  | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
-| FP3 | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
-
 | Fonction | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
-| FP3 | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes/Accident contre un obstacle | ------------- | Permettre une reconnaissance sur plusieurs niveaux avec une autre webcam sur le dessus manoeuvré par deux servo-moteurs (<360°) | 100% |
-| FC3 | Doit être autonome | nombre de raccordement physique en cas d'intervention | ------------- | Ajout d'une bobine à induction sous le robot pour recharger la baterrie | 100% |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| FP2 | le robot doit pouvoir se déplacer | Vitesse et adhérence | ------ | Remplacement des roues par des chenilles ou/et augmentation du couble moteur| 100% |
+| FP3 | le robot doit pouvoir identifier des objets | Taux de reconnaissance des canettes/Accident contre un obstacle | ------------- | Permettre une reconnaissance sur plusieurs niveaux avec une autre webcam sur le dessus manoeuvré par deux servo-moteurs (<360°) | 100% |
+| FS2 | le robot doit pouvoir être paramétrable par l’opérateur | Changement de configuration | via button ou via interface web | Création d'une interface web | 100% |
+| FS3 | le robot doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Optimisation du trajet du robot | ----- | Ajout d'un système de compteur de tour du moteur et/ou cartographie | 80% |
+| FS4 | le robot doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Optimisation du trajet du robot | ----- | Ajout d'un système de compteur de tour du moteur et/ou cartographie | 80% |
+| FS5 | le robot doit savoir quand il est chargé | Autonome | ----- | Capable de retourner à la base avant d'être à plat | 100% |
+| FC3 | le robot doit être autonome | nombre de raccordement physique en cas d'intervention | ------------- | Ajout d'une bobine à induction sous le robot pour recharger la baterrie | 100% |
+| FC4 | le robot doit être utilisé de jour | Fonctionne avec une luminosité restreinte | ------------- | Ajout d'un projecteur avec détecteur de luminosité | 70% |
+| Autre | Gestion d'une flote de robot | Communique entre eux | ------------- | --------- | 80% |
+| Autre | BigData | Analyse du lieu de ramassage récurent et optimisation du ramassage en temps | ------------- | --------- | 80% |
 
 ## V.FAQ ##
 
