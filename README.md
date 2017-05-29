@@ -65,6 +65,8 @@ Dans le Schéma suivant:
 - FC correspond à fonction contrainte.
 ![Image_Analyse_Fonctionnelle](https://github.com/miyujach/Projet-Robot/blob/master/Images/analyse%20fonctionnelle.PNG)
 
+Exemple de lecture: Fonction Secondaire 2, l'opérateur peut paramétrer le robot.
+
 | Fonction  | Rôle | Critères | Flexibilité |
 | ----------- | ------------- | ------------- | ------------- |
 | FP1 | Le robot doit permettre de ramasser des objets cylindrique | Nombre d'essai et erreur par prise | Taux de reconnaissance des canettes / Accident contre un obstacle |
