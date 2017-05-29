@@ -154,8 +154,12 @@ Sa résistance au choc de même que sa facilité d'entretien sera aussi pour vou
 
 ## IV.Evolution ##
 
+| Fonction  | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
+| FP3 | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
+
 | Fonction | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
 | FP3 | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes/Accident contre un obstacle | ------------- | Permettre une reconnaissance sur plusieurs niveaux avec une autre webcam sur le dessus manoeuvré par deux servo-moteurs (<360°) | 100% |
+| FC3 | Doit être autonome | nombre de raccordement physique en cas d'intervention | ------------- | Ajout d'une bobine à induction sous le robot pour recharger la baterrie | 100% |
 
 ## V.FAQ ##
 
