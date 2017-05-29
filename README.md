@@ -60,26 +60,26 @@ Dans le Schéma suivant:
 
 | Fonction  | Rôle | Critères | Flexibilité |
 | ------------- | ------------- | ------------- | ------------- |
-| FP1 (fonction principale 1) | Doit permettre de ramasser des objets cylindrique | Nombre d'essai et erreur par prise | ------------- |
-| FP2 (fonction principale 2) | Doit pouvoir se déplacer | Avancer / Reculer / Gauche / Droite | Angle de Rotation |
+| FP1 (fonction principale 1) | Doit permettre de ramasser des objets cylindrique | Nombre d'essai et erreur par prise | Taux de reconnaissance des canettes / Accident contre un obstacle |
+| FP2 (fonction principale 2) | Doit pouvoir se déplacer | Déplacement | Angle de Rotation |
 | FP3 (fonction principale 3) | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes / Accident contre un obstacle | ------------- |
 | ------------- | ------------- | ------------- | ------------- |
 | FS1 (fonction secondaire 1) | Doit pouvoir se déplacer en faisant de la lumière ou un son | lumière dégagé et son entendu en db | ------------- |
-| FS2 (fonction secondaire 2) | Doit pouvoir être paramétrable par l’opérateur | ------------- | ------------- |
-| FS3 (fonction secondaire 3) | Doit pouvoir se situer pour retourner au dépôt en évitant les obstacles | ------------- | ------------- |
-| FS4 (fonction secondaire 4) | Doit pouvoir se situer pour rester dans la zone en évitant les obstacles | ------------- | ------------- |
-| FS5 (fonction secondaire 5) | Doit savoir quand il est chargé | témoin de charge / Décharge | ------------- |
+| FS2 (fonction secondaire 2) | Doit pouvoir être paramétrable par l’opérateur | Possibilité d'accès au composant | Accès aux prises démontable |
+| FS3 (fonction secondaire 3) | Doit pouvoir se situer pour retourner au dépôt en évitant les obstacles | Temps de retour | ------------- |
+| FS4 (fonction secondaire 4) | Doit pouvoir se situer pour rester dans la zone en évitant les obstacles | Déplacement | Reste dans la zone si mur |
+| FS5 (fonction secondaire 5) | Doit savoir quand il est chargé | témoin de charge / Décharge | Doit pouvoir voir son état de charge |
 | ------------- | ------------- | ------------- | ------------- |
-| FC1 (contrainte 1) | Doit évoluer dans une zone de 20cm² (4 x 5m) | test sur la durée dans une surface supérieur | ------------- |
+| FC1 (contrainte 1) | Doit évoluer dans une zone de 20cm² (4 x 5m) | test sur la durée dans une surface supérieur | Reste dans la zone meme si pas de mur |
 | FC2 (contrainte 2) | Doit être utilisé de jour | Taux de luminosité de la zone de test | ------------- |
-| FC3 (contrainte 3) | Doit être autonome | nombre de raccordement physique en cas d'intervention | ------------- |
-| FC4 (contrainte 4) | Doit esquiver des obstacles | parcour de test | ------------- |
-| FC5 (contrainte 5) | Doit avoir une zone de dépôt (40 x 40 cm) | ------------- | ------------- |
-| FC6 (contrainte 6) | Ne doit pas mettre en danger l’utilisateur | action non prévu interrompt le schéma initial | ------------- |
-| FC7 (contrainte 7) | Resistance aux chocs | crashtest/écrassement | ------------- |
+| FC3 (contrainte 3) | Doit être autonome | nombre de raccordement physique en cas d'intervention | 1 à 2 |
+| FC4 (contrainte 4) | Doit esquiver des obstacles | parcour de test | ------- |
+| FC5 (contrainte 5) | Doit avoir une zone de dépôt (40 x 40 cm) | taille de la zone | ------- |
+| FC6 (contrainte 6) | Ne doit pas mettre en danger l’utilisateur | action non prévu interrompt le schéma initial | Délai de 1 seconde |
+| FC7 (contrainte 7) | Resistance aux chocs | crashtest/écrassement | Doit resister à un coups de pied / main |
 | FC8 (contrainte 8) | Conforme aux normes CE | habilitation | ------------- |
 | FC9 (contrainte 9) | Resistance a l'eau | test avec de l'eau | Resistance aux eclaboussure |
-| FC10 (contrainte 10) | ------------- | ------------- | ------------- |
+| FC10 (contrainte 10) | Resistance à une crevaison | Déplacement | Doit pouvoir retourner à sa base |
 | FC11 (contrainte 11) | ------------- | ------------- | ------------- |
 | FC12 (contrainte 12) | ------------- | ------------- | ------------- |
 | FC13 (contrainte 13) | ------------- | ------------- | ------------- |
@@ -106,20 +106,39 @@ Du point de vue de la fonction principale 1. Il fallait un élément permettant 
 La solution de l'équipe fut l'utilisation d'un électro-aimant afin de ne pas avoir un aimant fonctionnant en continu et pouvant ainsi récuperé des éléments mécaniques de façon imprévu.
 
 Après différentes études l'équipe en est arrivé à la modélisation suivante:
+
+Vue latéral:
+
 ![Modelisation Chassis1](https://github.com/cepes/robotSearchAndDestroy/blob/master/RobotFinal1.PNG)
+
+Vue Frontal:
+
 ![Modelisation Chassis2](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/robot%20final%202.PNG)
+
+Vue de Dessous:
+
 ![Modelisation Chassis3](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/Robot%20final%203.PNG)
 
 Ci-joint un [modele 3D](https://github.com/cepes/robotSearchAndDestroy/blob/master/Robot%20Final.123dx)
 
   ### Schéma Electronique ###
 
-Le schéma éléctrique est le suivant. La R3 électro-aimant de 12,5 Ohm correspond à la resistance interne de l'electroaimant en fonctionnement.
-![Circuit_Schéma_dévellopé](https://github.com/cepes/robotSearchAndDestroy/blob/master/Circuit%20schema.PNG)
+Le schéma éléctrique est le suivant. La R3 électro-aimant de 12,5 Ohm correspond à la resistance interne de l'electroaimant en fonctionnement. L'Infrarouge n'est pas représenté sur ce schéma car directement alimenté par la raspberry et connecté à celle-ci.
+![Circuit_Schéma_dévellopé](https://github.com/miyujach/Projet-Robot/blob/master/Sch%C3%A9ma%20%C3%A9lectrique/sch%C3%A9ma_electrique_L293D.PNG)
 
   ### C.UML ###
-  
-![UML de déploiement](https://github.com/cepes/robotSearchAndDestroy/blob/master/UML%20Deploiement.PNG)
+
+Au niveau de la liaison entre la partie mécanique et informatique l'UML est le suivant:
+
+UML de déploiement:
+
+![UML de déploiement](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Deploiement.PNG)
+
+UML d'activité:
+
+![UML d'activité](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Activit%C3%A9.PNG)
+
+[Fichier UML](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML_Diagramme.mdj)
 
 ## III.Evolution ##
 
@@ -150,8 +169,8 @@ Certaines partie plastique du proof of concept étant spécifique à notre entre
 | [Pack de cables de connexions](http://www.gotronic.fr/art-pack-de-cables-de-connexion-12411.htm) | 1 | 9,90 |
 | [Arduino Uno](https://www.amazon.fr/dp/B01N91PVIS/ref=sr_1_3?ie=UTF8&qid=1495631066&sr=8-3&keywords=arduino+uno) | 1 | 9,90 |
 | [Cable Alimentation Micro USB](https://www.amazon.fr/Anker-anti-emm%C3%AAlement-connecteurs-smartphones-Android/dp/B00SUX2IPE/ref=sr_1_9?ie=UTF8&qid=1495631198&sr=8-9&keywords=cable+micro+usb) | 1 | 5,99 |
-| [Cable Alimentation Circuit]() | 1 | Fournisseur | 5,99 |
-| [NPN](https://www.amazon.fr/s8050d-92-%C3%A0-usage-g%C3%A9n%C3%A9ral-transistors/dp/B0087YQV5O/ref=sr_1_3?s=electronics&ie=UTF8&qid=1495631494&sr=1-3&keywords=transistor+npn+5v) | 2 | 2,57 |
+| [Cable Alimentation Circuit]() | 1 |  5,99 |
+| [L293D](http://www.gotronic.fr/art-l293d-14072.htm) | 1 | 3,20 | 
 
 
    #### B.Default d'un composant ? ####
@@ -159,7 +178,7 @@ Certaines partie plastique du proof of concept étant spécifique à notre entre
 En cas de défault d'un composant, il suffit d'identifier le composant défectueux à l'aide d'un multimètre et d'opérér un remplacement de celui-ci. Une liste des composants présent dans le robot est disponible dans ce FAQ à la partie liste des composants.
 
 Ci-joint un schéma électrique modélisé, un schéma électrique dévellopé est disponible dans le chapitre Projet SearchAndDestroy partie Schéma électronique:
-![Circuit_Schéma](https://github.com/cepes/robotSearchAndDestroy/blob/master/Circuit%20modele.PNG)
+![Circuit_Schéma](https://github.com/miyujach/Projet-Robot/blob/master/Sch%C3%A9ma%20%C3%A9lectrique/mod%C3%A8le_electrique_L293D.PNG)
 
 ## V.Annexes ##
 
