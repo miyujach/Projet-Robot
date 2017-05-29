@@ -63,7 +63,7 @@ Dans le Schéma suivant:
 - FP correspond à fonction principale.
 - FS correspond à fonction secondaire.
 - FC correspond à fonction contrainte.
-![Image_Analyse_Fonctionnelle](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/analyse%20fonctionnelle.PNG)
+![Image_Analyse_Fonctionnelle](https://github.com/miyujach/Projet-Robot/blob/master/Images/analyse%20fonctionnelle.PNG)
 
 | Fonction  | Rôle | Critères | Flexibilité |
 | ----------- | ------------- | ------------- | ------------- |
