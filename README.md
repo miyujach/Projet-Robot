@@ -50,8 +50,8 @@ Les critères initiaux du projet sont les suivants:
 - La zone pourra comporter des obstacles qui peuvent être esquivés
 - La zone de dépôt sera un carré rouge de 40cmx40cm
 
-Schéma représentant le robot et son envirronnement:
-![Image Sujet](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/schema_analyse.png)
+Schéma représentant le robot et son environnement:
+![Image Sujet](https://github.com/miyujach/Projet-Robot/blob/master/Images/Sch%C3%A9maCCh.PNG)
 
 Le résumé complet du projet est disponible au [lien suivant](https://github.com/miyujach/Projet-Robot/blob/master/Documentation%20Sujet/sujet.pdf)
 
