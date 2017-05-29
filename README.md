@@ -3,7 +3,8 @@
 ----------
 ![Image Sujet](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/b4e18d105783127b522bd345816336ddef0f7b48/t%C3%A9l%C3%A9chargement.png)
 
-L'objectif de ce projet est de répondre à un appel d'offre fictif concernant des robots de nettoyage urbain. Le projet se présente sous la forme d'un proof of concept.
+Après avoir remporté un appel d'offre sur la réalisation d'un robot "ramasseur de canette", l'entreprise DABOT dans laquelle nous travaillons dispose d'une dizaine de jours afin de présenter un prototypage du futur robot.
+
 
 ## Sommaire ##
 
@@ -39,15 +40,15 @@ L'objectif de ce projet est de répondre à un appel d'offre fictif concernant d
 
 ## I.Sujet du projet ##
 
-Il s'agit d'un robot capable de ramasser des cylindres métalliques (ici, des canettes). 
-Les critères initiaux du projet sont les suivants :
+Le projet, nommé AsCyloom, impose de réaliser un robot qui aura les caractérisques listés ci-dessous:
 
-- Les déchets à ramasser seront des cylindres métalliques ;
-- Le robot sera testé dans une zone de 20m² (4x5m) ;
-- Le robot sera utilisé de jour :
-- Le robot ne sera pas piloté, il sera autonome ;
-- La zone pourra comporter des obstacles qui doivent pouvoir être esquivés ;
-- La zone de dépôt sera un carré rouge de 40cmx40cm.
+- Les déchets à ramasser seront des cylindres métalliques.
+- Le robot sera testé dans une zone de 20m² (4x5m)
+- Le robot sera utilisé de jour
+- Le robot ne sera pas piloté, il sera autonome
+- La zone pourra comporter des obstacles qui peuvent être esquivés
+- La zone de dépôt sera un carré rouge de 40cmx40cm
+
 
 
 Schéma représentant le robot et son environnement:
