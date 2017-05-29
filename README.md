@@ -1,4 +1,4 @@
-# RobotSearchAndDestroy (Projet AsCyloom)
+Projet AsCyloom
 
 ----------
 ![Image Sujet](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/b4e18d105783127b522bd345816336ddef0f7b48/t%C3%A9l%C3%A9chargement.png)
@@ -18,19 +18,25 @@ Le projet se présente sous la forme d'un proof of concept.
 
 [Schéma Electronique](#schéma-electronique)
 
-[III.Evolution](#iiievolution)
+[III.Pourquoi nous?](#iiipourquoinous-)
 
-[IV.FAQ](#ivfaq)
+[IV.Evolution](#ivevolution)
+
+[V.FAQ](#vfaq)
 
   [A.Liste des composants](#aliste-des-composants)
 
   [B.Default d'un composant ?](#bdefault-dun-composant-)
 
-[V.Annexes](#vannexes)
+[VI.Annexes](#viannexes)
 
   [A.Matériel fourni](#amatériel-fourni)
 
   [B.Composition de l'équipe](#bcomposition-de-l'équipe)
+  
+  [C.Mise en Marche](#cmiseenmarche)
+  
+  [D.Problème](#dprobleme)
 
 ## I.Sujet du projet ##
 Il s'agit d'un robot qui sera capable de ramasser des cylindres métalliques (canettes).
@@ -80,11 +86,8 @@ Dans le Schéma suivant:
 | FC8 (contrainte 8) | Conforme aux normes CE | habilitation | ------------- |
 | FC9 (contrainte 9) | Resistance a l'eau | test avec de l'eau | Resistance aux eclaboussure |
 | FC10 (contrainte 10) | Resistance à une crevaison | Déplacement | Doit pouvoir retourner à sa base |
-| FC11 (contrainte 11) | ------------- | ------------- | ------------- |
-| FC12 (contrainte 12) | ------------- | ------------- | ------------- |
-| FC13 (contrainte 13) | ------------- | ------------- | ------------- |
-| FC14 (contrainte 14) | ------------- | ------------- | ------------- |
-| FC15 (contrainte 15) | ------------- | ------------- | ------------- |
+| FC11 (contrainte 11) | Doit pouvoir être facile d'entretien | Pièce industriel standardisé/ Temps de remplacement d'une pièce| 2 à 3 pièces non standart mais resistante |
+| FC12 (contrainte 12) | Doit pouvoir connaitre sa batteire | niveau de la batterie | ------------- |
 
   ### B.Analyse mécanique ###
 
@@ -140,13 +143,21 @@ UML d'activité:
 
 [Fichier UML](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML_Diagramme.mdj)
 
-## III.Evolution ##
+## III.Pourquoi nous? ##
 
-| Fonction  | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
-| FP3 | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes / Accident contre un obstacle | ------------- | Permettre une reconnaissance sur plusieurs niveaux avec une autre webcam sur le dessus manoeuvré par deux servo-moteurs (<360°)| 100% |
-| FC3 | Doit être autonome | nombre de raccordement physique en cas d'intervention | ------------- | Ajout d'une bobine à induction sous le robot pour recharger la baterrie | 100% |
+Le robot AsCyloom représente l'innovation de l'entreprise DaBot, celui-ci est en effet capable de répondre à vos besoins exprimé ci-avant si vous n'êtes toujours pas convaincu voici quelques arguments permettant de faire la distinction avec nos concurrents.
+Avec une batterie de 20 000 Ampères sont autonomie est largement supérieur à celle de ses concurrents.
 
-## IV.FAQ ##
+De plus son coût de production tout à faire modique de 231 euros (210 euros à produire), celui-ci vous permettra de répondre à vos attentes sans vous ruiner.
+
+Sa résistance au choc de même que sa facilité d'entretien sera aussi pour vous un critère de qualité.
+
+## IV.Evolution ##
+
+| Fonction | Rôle | Critères | Flexibilité | Evolution | Faisabilité |
+| FP3 | Doit pouvoir identifier des objets | Taux de reconnaissance des canettes/Accident contre un obstacle | ------------- | Permettre une reconnaissance sur plusieurs niveaux avec une autre webcam sur le dessus manoeuvré par deux servo-moteurs (<360°) | 100% |
+
+## V.FAQ ##
 
    #### A.Liste des composants ####
 
@@ -180,7 +191,17 @@ En cas de défault d'un composant, il suffit d'identifier le composant défectue
 Ci-joint un schéma électrique modélisé, un schéma électrique dévellopé est disponible dans le chapitre Projet SearchAndDestroy partie Schéma électronique:
 ![Circuit_Schéma](https://github.com/miyujach/Projet-Robot/blob/master/Sch%C3%A9ma%20%C3%A9lectrique/mod%C3%A8le_electrique_L293D.PNG)
 
-## V.Annexes ##
+  #### C.Mise en marche ####
+  
+Initialement votre robot est déjà configuré. Il vous suffit juste de recharger l'alimentation de la batterie de celui-ci.
+Dans le cas d'un changement de l'arduino ou de la raspberry il vous suffit d'insérer le code correspondant à l'interieur du dit composant.
+
+ #### D.Probleme ####
+
+Le robot ne s'arrête pas alors qu'un obstacle viens de se présenté à moins de 10cm du capteur.
+Cause: Le capteur à un seuil de détection compris entre 10 cm et 1 mètre.
+
+## VI.Annexes ##
 
   ### A.Matériel fournit ###
 
