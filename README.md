@@ -106,11 +106,17 @@ Du point de vue de la fonction principale 1. Il fallait un élément permettant 
 La solution de l'équipe fut l'utilisation d'un électro-aimant afin de ne pas avoir un aimant fonctionnant en continu et pouvant ainsi récuperé des éléments mécaniques de façon imprévu.
 
 Après différentes études l'équipe en est arrivé à la modélisation suivante:
+
 Vue latéral:
+
 ![Modelisation Chassis1](https://github.com/cepes/robotSearchAndDestroy/blob/master/RobotFinal1.PNG)
+
 Vue Frontal:
+
 ![Modelisation Chassis2](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/robot%20final%202.PNG)
+
 Vue de Dessous:
+
 ![Modelisation Chassis3](https://raw.githubusercontent.com/cepes/robotSearchAndDestroy/master/Robot%20final%203.PNG)
 
 Ci-joint un [modele 3D](https://github.com/cepes/robotSearchAndDestroy/blob/master/Robot%20Final.123dx)
@@ -121,8 +127,18 @@ Le schéma éléctrique est le suivant. La R3 électro-aimant de 12,5 Ohm corres
 ![Circuit_Schéma_dévellopé](https://github.com/miyujach/Projet-Robot/blob/master/Sch%C3%A9ma%20%C3%A9lectrique/sch%C3%A9ma_electrique_L293D.PNG)
 
   ### C.UML ###
-  
-![UML de déploiement](https://github.com/cepes/robotSearchAndDestroy/blob/master/UML%20Deploiement.PNG)
+
+Au niveau de la liaison entre la partie mécanique et informatique l'UML est le suivant:
+
+UML de déploiement:
+
+![UML de déploiement](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Deploiement.PNG)
+
+UML d'activité:
+
+![UML d'activité](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML%20Activit%C3%A9.PNG)
+
+[Fichier UML](https://github.com/miyujach/Projet-Robot/blob/master/UML/UML_Diagramme.mdj)
 
 ## III.Evolution ##
 
@@ -153,8 +169,8 @@ Certaines partie plastique du proof of concept étant spécifique à notre entre
 | [Pack de cables de connexions](http://www.gotronic.fr/art-pack-de-cables-de-connexion-12411.htm) | 1 | 9,90 |
 | [Arduino Uno](https://www.amazon.fr/dp/B01N91PVIS/ref=sr_1_3?ie=UTF8&qid=1495631066&sr=8-3&keywords=arduino+uno) | 1 | 9,90 |
 | [Cable Alimentation Micro USB](https://www.amazon.fr/Anker-anti-emm%C3%AAlement-connecteurs-smartphones-Android/dp/B00SUX2IPE/ref=sr_1_9?ie=UTF8&qid=1495631198&sr=8-9&keywords=cable+micro+usb) | 1 | 5,99 |
-| [Cable Alimentation Circuit]() | 1 | Fournisseur | 5,99 |
-| [NPN](https://www.amazon.fr/s8050d-92-%C3%A0-usage-g%C3%A9n%C3%A9ral-transistors/dp/B0087YQV5O/ref=sr_1_3?s=electronics&ie=UTF8&qid=1495631494&sr=1-3&keywords=transistor+npn+5v) | 2 | 2,57 |
+| [Cable Alimentation Circuit]() | 1 |  5,99 |
+| [L293D](http://www.gotronic.fr/art-l293d-14072.htm) | 1 | 3,20 | 
 
 
    #### B.Default d'un composant ? ####
@@ -162,7 +178,7 @@ Certaines partie plastique du proof of concept étant spécifique à notre entre
 En cas de défault d'un composant, il suffit d'identifier le composant défectueux à l'aide d'un multimètre et d'opérér un remplacement de celui-ci. Une liste des composants présent dans le robot est disponible dans ce FAQ à la partie liste des composants.
 
 Ci-joint un schéma électrique modélisé, un schéma électrique dévellopé est disponible dans le chapitre Projet SearchAndDestroy partie Schéma électronique:
-![Circuit_Schéma](https://github.com/cepes/robotSearchAndDestroy/blob/master/Circuit%20modele.PNG)
+![Circuit_Schéma](https://github.com/miyujach/Projet-Robot/blob/master/Sch%C3%A9ma%20%C3%A9lectrique/mod%C3%A8le_electrique_L293D.PNG)
 
 ## V.Annexes ##
 
