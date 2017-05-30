@@ -1,0 +1,313 @@
+#include <Servo.h>
+#include <Wire.h>
+
+#define SLAVE_ADDRESS 0x12
+int dataReceived = 0;
+
+// Valeur d'entrée Rasperry
+int analogPinA0 = 0; // Droite
+int analogPinA1 = 1; // Gauche
+int analogPinA2 = 2; // Avancer
+int analogPinA3 = 3; // Attraper / Lacher
+int analogPinA4 = 4; // CamGauche
+int analogPinA5 = 5; // CamDroite
+
+int valA0 = 0;
+int valA1 = 0;
+int valA2 = 0;
+int valA3 = 0;
+int valA4 = 0;
+int valA5 = 0;
+
+
+// Valeur de sortie
+
+
+int motor1Pin1 = 5;
+int motor1Pin2 = 6;
+int enable1Pin = 7;
+
+int motor2Pin1 = 2; 
+int motor2Pin2 = 3;  
+int enable2Pin = 4;  
+
+int digiPinD9 = 9; // Electro Aimant
+int digiPinD12 = 10; // Servo Aimant
+int digiPinD13 = 11; // Servo Webcam
+
+int dataASend = 0;
+
+Servo servoAimant;
+int angleAimant = 0;
+int angleMaximalDescente = 100;
+int angleInitiale = 180;
+
+Servo servoWebcam;
+int angleWebcam = 75;
+
+int initCameraAngle = angleWebcam;
+
+bool test = true;
+bool elementAttraper = false;
+
+int infrarougepin = 0;                 // analog pin du senseur
+int valeur_infrarouge = 0;                 // variable de stockage
+
+void setup()
+
+{
+  Serial.begin(9600);
+
+  Wire.begin(SLAVE_ADDRESS);
+  Wire.onReceive(receiveData);
+  Wire.onRequest(sendData);
+
+
+  pinMode(digiPinD9, OUTPUT);
+
+  servoAimant.attach(digiPinD12);
+  servoAimant.writeMicroseconds(1800);
+  servoAimant.write(angleInitiale);
+
+
+  servoWebcam.attach(digiPinD13);
+  servoWebcam.writeMicroseconds(1800);
+  servoWebcam.write(angleWebcam);
+
+  pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(enable1Pin, OUTPUT);
+  pinMode(motor2Pin1, OUTPUT);
+  pinMode(motor2Pin2, OUTPUT);
+  pinMode(enable2Pin, OUTPUT);
+
+  stopMotors();
+  
+}
+
+
+
+void loop()
+
+{
+  //lectureDesPorts ();
+//runMotorsL();
+//²runMotorsR();
+//runMotorsLR();
+//valA5 = 600;
+if (test == true)
+{
+  // TEST ATTRAPE CANETTE
+  //turnOnMagnet(digiPinD9);
+  //turnOffMagnet(digiPinD9);
+  test = false;
+}
+
+int datatest = 50;
+//Serial.println("Données Recu :");
+//Serial.println(dataReceived);
+switch (dataReceived) {
+    case 1: // Droite
+      runMotorsR();
+      break;
+    case 2: // Gauche
+      runMotorsL();
+      break;
+    case 3: // Avancer
+      runMotorsLR();
+      break;
+    case 4: // Attraper / Relacher
+      turnOnMagnet(digiPinD9);
+      break;
+    case 5: // CamGauche
+      angleWebcam = angleWebcam - 1;
+      if (angleWebcam < 45)
+      {
+        angleWebcam = 45;
+      }
+      //Serial.println("Camera à Gauche");
+      turnServo(servoWebcam,angleWebcam,false);
+      break;
+    case 6: // CamDroite
+      angleWebcam = angleWebcam + 1;
+      if (angleWebcam > 105)
+      {
+        angleWebcam = 105;
+      }
+      //Serial.println("Camera à Droite");
+      turnServo(servoWebcam,angleWebcam,false);
+      break;
+    case 7: // Arret Moteur
+      stopMotors();
+      break;
+    case 8: // Relacher
+      turnOffMagnet(digiPinD9);
+      break;
+    case 10: // Init Camera
+      angleWebcam = initCameraAngle;
+      servoWebcam.write(angleWebcam);
+      break;
+    case 11: // Reculer
+      reculerMotorsLR();
+      break;
+    default:
+
+    break;
+  }
+
+
+  verificationObstacle();
+
+
+}
+
+void verificationObstacle()
+{
+  valeur_infrarouge = analogRead(infrarougepin);
+  if(valeur_infrarouge >= 560)
+  {
+    //Serial.println("Un Obstacle est présent");
+    dataASend = 1;
+  }
+  else{
+    //Serial.println("Rien Devant");
+    dataASend = 0;
+  }
+}
+
+void turnServo (Servo servoSys, int pos, bool lissage)
+{
+  if (lissage == false)
+  {
+    servoSys.write(pos);
+    delay(100);
+  }
+  else
+  {
+    if (pos == angleMaximalDescente)
+    {
+      //Serial.println("Descente Bras");
+      for(pos = angleInitiale; pos > angleMaximalDescente; pos -= 1)  
+      {                                
+        servoSys.write(pos);                                          
+        delay(50);
+      }
+      
+    }
+    else
+    {
+      //Serial.println("Monter Bras");
+      for(pos = angleMaximalDescente; pos < angleInitiale; pos += 1)  
+      {                                
+        servoSys.write(pos);                                          
+        delay(50);
+      }
+    }
+    
+  }
+  
+}
+
+void turnOnMagnet(int pin)
+{
+  elementAttraper = true;
+  digitalWrite(pin, HIGH);
+
+  // TODO : Descendre le bras (servo aimant)
+  turnServo(servoAimant,angleMaximalDescente,true);
+  delay(1000);
+  
+   // Enclencher l'aimant 
+  delay(500);
+
+  // TODO : Monter le bras (servo aimant)
+  turnServo(servoAimant,angleInitiale,true);
+  delay(1000);
+
+  delay(6000);
+}
+
+void turnOffMagnet(int pin)
+{
+  elementAttraper = false;
+
+  // TODO : Descendre le bras (servo aimant)
+  turnServo(servoAimant,angleMaximalDescente,false);
+  delay(500);
+
+  digitalWrite(pin, LOW); // Desactiver l'aimant
+
+  // TODO : Monter le bras (servo aimant)
+  turnServo(servoAimant,angleInitiale,false);
+}
+
+void runMotorsL()
+{
+  digitalWrite(enable1Pin, HIGH);
+  digitalWrite(enable2Pin, HIGH);
+  
+  digitalWrite(motor1Pin1, HIGH); 
+  digitalWrite(motor1Pin2, LOW);  
+  digitalWrite(motor2Pin1, LOW);  
+  digitalWrite(motor2Pin2, HIGH);
+  Serial.println("Moteur Gauche");
+}
+
+void runMotorsR()
+{
+  digitalWrite(enable1Pin, HIGH);
+  digitalWrite(enable2Pin, HIGH);
+  
+  digitalWrite(motor1Pin1, LOW); 
+  digitalWrite(motor1Pin2, HIGH);  
+  digitalWrite(motor2Pin1, HIGH);  
+  digitalWrite(motor2Pin2, LOW);
+  Serial.println("Moteur Droite");
+}
+
+void runMotorsLR()
+{
+  digitalWrite(enable1Pin, HIGH);
+  digitalWrite(enable2Pin, HIGH);
+  
+  
+  digitalWrite(motor1Pin1, HIGH);  
+  digitalWrite(motor1Pin2, LOW);  
+  digitalWrite(motor2Pin1, HIGH);   
+  digitalWrite(motor2Pin2, LOW); 
+  Serial.println("Moteur Avancer");
+}
+
+void reculerMotorsLR()
+{
+  digitalWrite(enable1Pin, HIGH);
+  digitalWrite(enable2Pin, HIGH);
+  
+  
+  digitalWrite(motor1Pin1, LOW);  
+  digitalWrite(motor1Pin2, HIGH);  
+  digitalWrite(motor2Pin1, LOW);   
+  digitalWrite(motor2Pin2, HIGH); 
+  Serial.println("Moteur Reculer");
+}
+
+void stopMotors()
+{
+  digitalWrite(enable1Pin, LOW);
+  digitalWrite(enable2Pin, LOW);
+}
+
+void receiveData(int byteCount){
+    while(Wire.available()) {
+        dataReceived = Wire.read();
+        //Serial.print("Donnee recue : ");
+        //Serial.println(dataReceived);
+    }
+}
+
+void sendData(){
+    //int envoi = dataReceived + 1;
+    
+    Wire.write(dataASend);
+}
+
