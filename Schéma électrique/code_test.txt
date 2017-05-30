@@ -1,0 +1,81 @@
+#include <Servo.h>
+
+//Servo Moteur
+Servo ServoWebcam;
+Servo ServoAimant;
+int position=0;
+int angle=0;
+
+
+int motor1Pin1 = 10;    // (Input 1)  du L293D
+int motor1Pin2 = 11;    // (Input 2) du L293D
+int enable1Pin = 9;     // (Enable 1) du L293D
+
+int motor2Pin1 = 2;    // (Input 3)  du L293D
+int motor2Pin2 = 4;    //  (Input 4) du L293D
+int enable2Pin = 5;     // (Enable 2) du L293D
+
+// the setup routine runs once when you press reset:
+void setup() {
+
+  pinMode (4, OUTPUT);
+  pinMode (2, OUTPUT);
+  // initialize the digital pin as an output.
+  ServoWebcam.attach(13);
+  ServoAimant.attach(12);
+  ServoWebcam.write(13);
+  ServoAimant.write(12);
+  
+  
+   // set all the other pins you're using as outputs:
+  pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(enable1Pin, OUTPUT);
+  pinMode(motor2Pin1, OUTPUT);
+  pinMode(motor2Pin2, OUTPUT);
+  pinMode(enable2Pin, OUTPUT);
+
+  // Mettre la broche Enable a high comme ca le moteur tourne
+  digitalWrite(enable1Pin, HIGH);
+  digitalWrite(enable2Pin, HIGH);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+
+  // Le moteur tourne dans un sens 
+  digitalWrite(motor1Pin1, LOW);   // mettre pin 2 a 293D low
+  digitalWrite(motor1Pin2, HIGH);  // mettre pin 7 a L293D high
+  digitalWrite(motor2Pin1, LOW);   
+  digitalWrite(motor2Pin2, HIGH);  
+  
+  delay( 3000 ); // Attendre 3 secondes 
+
+  // Le moteur tourne dans l'autre sens 
+  digitalWrite(motor1Pin1, HIGH);  // Mettre pin 2 a L293D high
+  digitalWrite(motor1Pin2, LOW);   // Mettre pin 7 a L293D low
+  digitalWrite(motor2Pin1, HIGH);  
+  digitalWrite(motor2Pin2, LOW);
+  
+  delay( 3000 ); // Attendre 3 secondes 
+  
+  // Le moteur tourne dans l'autre sens 
+  digitalWrite(motor1Pin1, LOW);  // Mettre pin 2 a L293D high
+  digitalWrite(motor1Pin2, HIGH);   // Mettre pin 7 a L293D low
+  digitalWrite(motor2Pin1, HIGH);  
+  digitalWrite(motor2Pin2, LOW);
+   delay( 3000 ); // Attendre 3 secondes 
+ 
+   for(position = 0; position < 181; position += 1)        // bouton en position ON => servo  
+   {                                
+     ServoWebcam.write(position);
+     delay(100);
+   }
+
+   for(angle = 0; angle < 181; angle += 1) 
+   {                                
+      ServoAimant.write(angle);
+   		delay(100);
+   }
+  delay(1000);
+}
