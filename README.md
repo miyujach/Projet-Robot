@@ -104,7 +104,7 @@ Du point de vue de la fonction principale 3 et selon la fonction principale 1 (i
 - La webcam est fixée sur le châssis : dans ce cas, ce sont les roues motrices qui permettent à la webcam d’avoir un champ de vision large.
 - La webcam est mobile sur un bras articulé.
 
-Pour ce proof of concept, nous avons décidé de choisir l'option du bras articulé, qui a l'avantage de permettre une plus grande rotation de la caméra. Celle-ci peut ainsi atteindre un axe de rotation d'un peu moins de 30°. Toutefois, nous resterons pour notre exemple sur une rotation sur un seul plan.
+Pour ce proof of concept, nous avons décidé de choisir l'option du bras articulé, qui a l'avantage de permettre une plus grande rotation de la caméra. Celle-ci peut ainsi atteindre un axe de rotation d'un peu moins de 30°.
 
 - Un système de pince. Toutefois, nous avons écarté cette option en raison de la complexité de l'algorithme au vu du temps de développement nécessaire pour positionner correctement la pince.
 - Un système de râteau. Toutefois, celui-ci aurait pu bloquer le fonctionnement correct des roues.
