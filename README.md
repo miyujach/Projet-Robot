@@ -84,7 +84,6 @@ fonction Secondaire 2, l'opérateur peut paramétrer le robot.
 | FC1 | Le robot doit évoluer dans une zone de 20cm² (4 x 5m) | Test sur la durée sur une surface supérieur | le robot doit rester dans la zone délimitée même si celle-ci n'a pas d'obstacle délimitant, tel qu'un mur |
 | FC2 | Le robot doit être utilisé de jour | Taux de luminosité de la zone de test | ------------- |
 | FC3 | Le robot doit être autonome | Nombre de raccordement physique en cas d'intervention | 1 à 2 |
-| FC4 | Le robot doit esquiver des obstacles | Parcour de test | ------- |
 | FC5 | Le robot doit avoir une zone de dépôt (40 x 40 cm) | Taille de la zone | ------- |
 | FC6 | Le robot ne doit pas mettre en danger l’utilisateur | Une action non prévu interrompt le schéma initial | Délai de 1 seconde |
 | FC7 | Le robot doit être resistance aux chocs | Crash-test/écrassement | Doit resister à un coups de pied ou un objet ou encore à un lancer d'origine humaine par exemple. |
